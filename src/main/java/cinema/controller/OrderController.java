@@ -1,7 +1,6 @@
 package cinema.controller;
 
 import cinema.dto.response.OrderResponseDto;
-import cinema.exception.DataProcessingException;
 import cinema.model.ShoppingCart;
 import cinema.model.User;
 import cinema.service.OrderService;
@@ -40,7 +39,7 @@ public class OrderController {
         UserDetails details = (UserDetails) auth.getPrincipal();
         String email = details.getUsername();
         User user = userService.findByEmail(email).orElseThrow(
-                () -> new DataProcessingException("User with email " + email + " not found"));
+                () -> new RuntimeException("User with email " + email + " not found"));
         ShoppingCart cart = shoppingCartService.getByUser(user);
         return orderMapper.mapToDto(orderService.completeOrder(cart));
     }
@@ -50,7 +49,7 @@ public class OrderController {
         UserDetails details = (UserDetails) auth.getPrincipal();
         String email = details.getUsername();
         User user = userService.findByEmail(email).orElseThrow(
-                () -> new DataProcessingException("User with email " + email + " not found"));
+                () -> new RuntimeException("User with email " + email + " not found"));
         return orderService.getOrdersHistory(user)
                 .stream()
                 .map(orderMapper::mapToDto)
