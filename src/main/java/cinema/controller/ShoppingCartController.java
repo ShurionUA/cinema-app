@@ -1,7 +1,6 @@
 package cinema.controller;
 
 import cinema.dto.response.ShoppingCartResponseDto;
-import cinema.exception.DataProcessingException;
 import cinema.model.MovieSession;
 import cinema.model.User;
 import cinema.service.MovieSessionService;
@@ -39,7 +38,7 @@ public class ShoppingCartController {
         UserDetails details = (UserDetails) auth.getPrincipal();
         String email = details.getUsername();
         User user = userService.findByEmail(email).orElseThrow(
-                () -> new DataProcessingException("User with email " + email + " not found"));
+                () -> new RuntimeException("User with email " + email + " not found"));
         MovieSession movieSession = movieSessionService.get(movieSessionId);
         shoppingCartService.addSession(movieSession, user);
     }
@@ -49,7 +48,7 @@ public class ShoppingCartController {
         UserDetails details = (UserDetails) auth.getPrincipal();
         String email = details.getUsername();
         User user = userService.findByEmail(email).orElseThrow(
-                () -> new DataProcessingException("User with email " + email + " not found"));
+                () -> new RuntimeException("User with email " + email + " not found"));
         return shoppingCartMapper.mapToDto(shoppingCartService.getByUser(user));
     }
 }

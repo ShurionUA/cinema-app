@@ -1,7 +1,6 @@
 package cinema.controller;
 
 import cinema.dto.response.UserResponseDto;
-import cinema.exception.DataProcessingException;
 import cinema.model.User;
 import cinema.service.UserService;
 import cinema.service.mapper.UserMapper;
@@ -24,7 +23,7 @@ public class UserController {
     @GetMapping("/by-email")
     public UserResponseDto getByEmail(@RequestParam String email) {
         User user = userService.findByEmail(email).orElseThrow(
-                () -> new DataProcessingException("User with email " + email + " not found"));
+                () -> new RuntimeException("User with email " + email + " not found"));
         return userMapper.mapToDto(user);
     }
 }
